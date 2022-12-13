@@ -143,7 +143,7 @@ public class GUI extends JFrame {
                         buttons[0].setText(arr.get(0).word);
                         buttons[1].setText(arr.get(1).word);
                         buttons[2].setText(arr.get(2).word);
-                    } else if (arr.size() >= 3) {
+                    } else if (arr.size() > 3) {
                         int trichotomy = arr.size() / 3;
                         buttons[0].setText(arr.get(myRandom.nextInt(0, trichotomy - 1)).word);
                         buttons[1].setText(arr.get(myRandom.nextInt(trichotomy, 2 * trichotomy - 1)).word);
@@ -175,7 +175,6 @@ public class GUI extends JFrame {
                 buffer = text.getText();
                 buffer = buffer.substring(0,buffer.length()-1);
                 text.setText("" + buffer);
-
             }
         });
         setVisible(true);
