@@ -14,8 +14,6 @@ public class TextGenerationModel {
 
     public TextGenerationModel(int choice){
         if (choice == 1) {
-
-            /*
             String[] file_names =
                     {
                             "/home/georgechuff/IdeaProjects/final_project/src/Bahchisarajskij_fontan.txt",
@@ -24,7 +22,6 @@ public class TextGenerationModel {
                             "/home/georgechuff/IdeaProjects/final_project/src/oxxxymiron.txt",
                             "/home/georgechuff/IdeaProjects/final_project/src/Barhatnaja_revoljucija_v_reklame.txt"
                     };
-             */
             int i = 1;
             text = "";
             try {
@@ -109,7 +106,7 @@ public class TextGenerationModel {
             }
             ArrayList<Tuple> cur = new ArrayList<Tuple>();
             // указать свой путь
-            // try(FileWriter writer = new FileWriter("/home/georgechuff/IdeaProjects/final_project/src/newHashMap.txt", false))
+            try(FileWriter writer = new FileWriter("/home/georgechuff/IdeaProjects/final_project/src/newHashMap.txt", false))
             {
                 for (String key : keys){
                     cur = word_dict.get(key);
@@ -127,7 +124,7 @@ public class TextGenerationModel {
             try
             {
                 // переделать строку под свои нужды
-                // BufferedReader reader = new BufferedReader(new FileReader("/home/georgechuff/IdeaProjects/final_project/src/newHashMap.txt"));
+                BufferedReader reader = new BufferedReader(new FileReader("/home/georgechuff/IdeaProjects/final_project/src/newHashMap.txt"));
                 String line;
                 String cur_key = "";
                 ArrayList<Tuple> cur_arr = new ArrayList<Tuple>();
