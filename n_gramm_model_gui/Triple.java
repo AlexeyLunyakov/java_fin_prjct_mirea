@@ -1,3 +1,12 @@
+/*!
+\file
+\brief Файл содержащий класс Triple
+*/
+package ru.mirea.fin_prjct.ngramm_model_gui.n_gramm_model_gui;
+
+/// <summary>
+///  Массив-тройка (вспомогательный файл)
+/// </summary>
 public class Triple <E, V, T>{
     public E first;
     public V second;

@@ -1,17 +1,30 @@
+/*!
+\file
+\brief Файл содержащий класс генерирующий n-граммную модель
+*/
+package ru.mirea.fin_prjct.ngramm_model_gui.n_gramm_model_gui;
+
 import java.io.*;
 import java.lang.reflect.Array;
 import java.util.*;
 
+/// <summary>
+///  Класс, который содержит работу с моделью, позволяющую создавать новые тексты
+/// </summary>
 public class TextGenerationModel {
+    /// Приватное поле входного текста
     private String text;
+    /// Массив строковых объектов, являющийся поэлементной входной строкой
     private String [] split_text;
+    /// Массив выборов, предоставляемых моделью
     private ArrayList<Triple<String, String, String>> ss;
-
-    private ArrayList<String> cur_answers;
+    /// Хеш-таблица слов модели - словарь
     HashMap<String, ArrayList<Tuple>> word_dict;
+    /// Сканнер ввода
     private Scanner sc = new Scanner(System.in);
-    Random myRandom = new Random();
-
+    /// Поле для вызова рандомного элемента словаря модели
+    public Random myRandom = new Random();
+    /// Функция генерации текста N-граммной модели
     public TextGenerationModel(int choice){
         if (choice == 1) {
             String[] file_names =
@@ -50,7 +63,7 @@ public class TextGenerationModel {
         }
     }
 
-    // переделать под private
+    /// Метод, который высчитывает вероятность того, что после двух слов последует следующее слово
     private double MLE(String text1, String text2) {
         String text12 = text1 + " " + text2;
         try {
@@ -61,14 +74,14 @@ public class TextGenerationModel {
             return 0.0;
         }
     }
-
+    /// Функция генерации массивов троек
     private void make_triples(){
         ss = new ArrayList<Triple<String, String, String>>();
         for (int i = 0; i < split_text.length - 2; i++) {
             ss.add(new Triple<String, String, String>(split_text[i], split_text[i + 1], split_text[i + 2]));
         }
     }
-
+    /// Функция тренировки модели на предоставленных текстах
     public void train(int choice) throws IOException {
         if (choice == 1) {
             word_dict = new HashMap<>();
@@ -106,7 +119,8 @@ public class TextGenerationModel {
             }
             ArrayList<Tuple> cur = new ArrayList<Tuple>();
             // указать свой путь
-            try(FileWriter writer = new FileWriter("/home/georgechuff/IdeaProjects/final_project/src/newHashMap.txt", false))
+            //try(FileWriter writer = new FileWriter("trained_model/model.txt", false)) // Lunal
+            try(FileWriter writer = new FileWriter("trained_model/model.txt", false))
             {
                 for (String key : keys){
                     cur = word_dict.get(key);
@@ -124,7 +138,8 @@ public class TextGenerationModel {
             try
             {
                 // переделать строку под свои нужды
-                BufferedReader reader = new BufferedReader(new FileReader("/home/georgechuff/IdeaProjects/final_project/src/newHashMap.txt"));
+                //BufferedReader reader = new BufferedReader(new FileReader("trained_model/model.txt")); // Lunal
+                BufferedReader reader = new BufferedReader(new FileReader("trained_model/model.txt"));
                 String line;
                 String cur_key = "";
                 ArrayList<Tuple> cur_arr = new ArrayList<Tuple>();
@@ -148,56 +163,8 @@ public class TextGenerationModel {
             }
         }
     }
+    /// Функция создания словаря
     public HashMap<String, ArrayList<Tuple>> get_word_dict(){
         return word_dict;
-    }
-    public void build_sequences(String word, String cur_sequence) {
-
-        //String first_word = keys.get(myRandom.nextInt(0, keys.size()) - 1);/
-        System.out.println("Current sequence: " + cur_sequence);
-
-        ArrayList<Tuple> arr = word_dict.get(word);
-        String cur_word;
-        if (arr != null) {
-            if (arr.size() == 2) {
-                System.out.println("1) " + arr.get(0).word);
-                System.out.println("2) " + arr.get(1).word);
-                System.out.println("Выберите одно из этих слов: ");
-                cur_word = sc.next();
-                if (Objects.equals(arr.get(0).word, cur_word) || Objects.equals(arr.get(1).word, cur_word)) {
-                    if (word.split(" ").length == 2) {
-                        build_sequences(word.split(" ")[1] + " " + cur_word, cur_sequence);
-                    } else {
-                        build_sequences(word + " " + cur_word, cur_sequence.concat(" " + cur_word));
-                    }
-                }
-            } else if (arr.size() == 1) {
-                cur_word = arr.get(0).word;
-                System.out.println(cur_word);
-                System.out.println("Продолжить выбор? (yes/no)");
-                String choice = sc.next();
-                if (Objects.equals("yes", choice) || Objects.equals("no", choice)) {
-                    if (word.split(" ").length == 2) {
-                        build_sequences(word.split(" ")[1] + " " + cur_word, cur_sequence.concat(" " + cur_word));
-                    } else {
-                        build_sequences(word + " " + cur_word, cur_sequence.concat(" " + cur_word));
-                    }
-                }
-            } else if (arr.size() >= 3) {
-                int trichotomy = arr.size() / 3;
-                System.out.println("1) " + arr.get(myRandom.nextInt(0, trichotomy - 1)).word);
-                System.out.println("2) " + arr.get(myRandom.nextInt(trichotomy, 2 * trichotomy - 1)).word);
-                System.out.println("3) " + arr.get(myRandom.nextInt(2 * trichotomy, arr.size() - 1)).word);
-                System.out.println("Выберите одно из этих слов: ");
-                cur_word = sc.next();
-                if (Objects.equals(cur_word, arr.get(0).word) || Objects.equals(arr.get(1).word, cur_word) || Objects.equals(arr.get(2).word, cur_word)) {
-                    if (word.split(" ").length == 2) {
-                        build_sequences(word.split(" ")[1] + " " + cur_word, cur_sequence.concat(" " + cur_word));
-                    } else {
-                        build_sequences(word + " " + cur_word, cur_sequence.concat(" " + cur_word));
-                    }
-                }
-            }
-        }
     }
 }

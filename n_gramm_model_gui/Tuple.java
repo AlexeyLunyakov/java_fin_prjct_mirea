@@ -1,5 +1,15 @@
+/*!
+\file
+\brief Файл содержащий класс the Tuple
+*/
+package ru.mirea.fin_prjct.ngramm_model_gui.n_gramm_model_gui;
+
 import java.util.HashMap;
 
+
+/// <summary>
+///  Кортеж (вспомогательный файл)
+/// </summary>
 public class Tuple {//extends JsonSerializer<Tuple> {
 
     public String word;

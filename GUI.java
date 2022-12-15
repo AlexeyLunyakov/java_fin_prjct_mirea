@@ -1,11 +1,12 @@
-package ru.mirea.fin_prjct.ngramm_model_gui;
+package ru.mirea.fin_prjct.ngramm_model_gui;/*!
+\file
+\brief Файл содержащий класс графического интерфейса
+*/
 
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
 
 public class GUI extends JFrame {
     static JMenuBar mb;
@@ -41,7 +42,7 @@ public class GUI extends JFrame {
         // Ввод текста
         final JTextArea text = new JTextArea(10, 100);
         text.setText("Текст нужно вводить сюда.");
-        text.setForeground(Color.GRAY);
+        text.setForeground(Color.BLACK);
         text.setBounds( 110, 40, 350, 100);
         text.setLineWrap(true);
         text.setWrapStyleWord(true);
@@ -145,10 +146,11 @@ public class GUI extends JFrame {
                         buttons[0].setText(arr.get(0).word);
                         buttons[1].setText(arr.get(1).word);
                         buttons[2].setText(arr.get(2).word);
-                    } else if (arr.size() >= 3) {
+                    } else if (arr.size() > 3) {
                         int trichotomy = arr.size() / 3;
-                        buttons[0].setText(arr.get(myRandom.nextInt(0, trichotomy - 1)).word);
-                        buttons[1].setText(arr.get(myRandom.nextInt(trichotomy, 2 * trichotomy - 1)).word);
+                        int ttrichotomy = arr.size() % 3;
+                        buttons[0].setText(arr.get(myRandom.nextInt(0, trichotomy)).word);
+                        buttons[1].setText(arr.get(myRandom.nextInt(trichotomy, 2 * trichotomy - ttrichotomy)).word);
                         buttons[2].setText(arr.get(myRandom.nextInt(2 * trichotomy, arr.size() - 1)).word);
                     } else {
                         buttons[0].setText("-");
@@ -177,7 +179,6 @@ public class GUI extends JFrame {
                 buffer = text.getText();
                 buffer = buffer.substring(0,buffer.length()-1);
                 text.setText("" + buffer);
-
             }
         });
         setVisible(true);
